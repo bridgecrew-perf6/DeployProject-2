@@ -26,6 +26,8 @@ public class Goal {
     private Date startDate;
     @Column(name = "status", nullable = false)
     private String status;
+    @Column(name = "actionPlan", nullable = false)
+    private String actionPlan;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")

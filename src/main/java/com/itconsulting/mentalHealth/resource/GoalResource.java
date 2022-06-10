@@ -15,5 +15,6 @@ public class GoalResource {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     private Date startDate;
 
+    private String actionPlan;
     private String status;
 }
