@@ -42,24 +42,25 @@ public class SleepRecordController {
 
     @GetMapping("/users/{userId}/sleeps/{sleepId}")
     public SleepRecordResource getSleepRecordByIdAndUserId(@PathVariable(name = "userId") Long userId,
-                                                         @PathVariable(name = "sleepId") Long sleepId) {
+                                                           @PathVariable(name = "sleepId") Long sleepId) {
         return convertToResource(sleepRecordService.getSleepRecordByIdAndUserId(sleepId, userId));
     }
     @PostMapping("/users/{userId}/sleeps")
     public SleepRecordResource createSleep(@PathVariable(name = "userId") Long userId,
-                                         @Valid @RequestBody SleepRecordResource resource) {
-        return convertToResource(sleepRecordService.saveSleepRecord(convertToEntity(resource),userId));
+                                           @Valid @RequestBody SleepRecordResource resource) {
+        Long sleepRecordId=  sleepRecordService.saveSleepRecord(convertToEntity(resource),userId).getId();
+        return  convertToResource(sleepRecordService.getTheDayOfWeek(sleepRecordId,userId));
 
     }
     @PutMapping("/users/{userId}/sleeps/{sleepId}")
     public SleepRecordResource updateTestResult(@PathVariable(name = "userId") Long userId,
-                                               @PathVariable(name = "sleepId") Long sleepId,
-                                               @Valid @RequestBody SleepRecordResource resource) {
+                                                @PathVariable(name = "sleepId") Long sleepId,
+                                                @Valid @RequestBody SleepRecordResource resource) {
         return convertToResource(sleepRecordService.updateSleepRecordById(convertToEntity(resource),sleepId, userId));
     }
     @DeleteMapping("/users/{userId}/sleeps/{sleepId}")
     public ResponseEntity<?> deleteSleepRecord(@PathVariable(name = "userId") Long userId,
-                                              @PathVariable(name = "sleepId") Long sleepId) {
+                                               @PathVariable(name = "sleepId") Long sleepId) {
         return sleepRecordService.deleteSleepRecord(sleepId, userId);
     }
     private SleepRecord convertToEntity(SleepRecordResource resource) {

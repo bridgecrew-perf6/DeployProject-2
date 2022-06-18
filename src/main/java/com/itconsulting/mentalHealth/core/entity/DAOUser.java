@@ -13,7 +13,6 @@ import javax.persistence.*;
 public class DAOUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
     private Long id;
 
     @Column(name = "userName", nullable = false)
