@@ -2,6 +2,7 @@ package com.itconsulting.mentalHealth.controller;
 
 import com.itconsulting.mentalHealth.core.entity.Affirmation;
 import com.itconsulting.mentalHealth.core.service.AffirmationService;
+import com.itconsulting.mentalHealth.core.service.AffirmationService;
 import com.itconsulting.mentalHealth.resource.AffirmationResource;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,25 +41,26 @@ public class AffirmationController {
 
     @GetMapping("/users/{userId}/affirmations/{affirmationId}")
     public AffirmationResource getAffirmationByIdAndUserId(@PathVariable(name = "userId") Long userId,
-                                             @PathVariable(name = "affirmationId") Long affirmationId) {
+                                                           @PathVariable(name = "affirmationId") Long affirmationId) {
         return convertToResource(affirmationService.getAffirmationByIdAndUserId(affirmationId, userId));
     }
 
     @PostMapping("/users/{userId}/affirmations")
     public AffirmationResource createAffirmation(@PathVariable(name = "userId") Long userId,
-                                   @Valid @RequestBody AffirmationResource resource) {
-        return convertToResource(affirmationService.saveAffirmation(convertToEntity(resource),userId));
+                                                 @Valid @RequestBody AffirmationResource resource) {
+        Long affirmationId = convertToResource(affirmationService.saveAffirmation(convertToEntity(resource),userId)).getId();
+        return convertToResource( affirmationService.getTheDayOfWeek(affirmationId,userId));
 
     }
     @PutMapping("/users/{userId}/affirmations/{affirmationId}")
     public AffirmationResource updateAffirmation(@PathVariable(name = "userId") Long userId,
-                                   @PathVariable(name = "affirmationId") Long affirmationId,
-                                   @Valid @RequestBody AffirmationResource resource) {
+                                                 @PathVariable(name = "affirmationId") Long affirmationId,
+                                                 @Valid @RequestBody AffirmationResource resource) {
         return convertToResource(affirmationService.updateAffirmationById(convertToEntity(resource),affirmationId, userId));
     }
     @DeleteMapping("/users/{userId}/affirmations/{affirmationId}")
     public ResponseEntity<?> deleteAffirmation(@PathVariable(name = "userId") Long userId,
-                                        @PathVariable(name = "affirmationId") Long affirmationId) {
+                                               @PathVariable(name = "affirmationId") Long affirmationId) {
         return affirmationService.deleteAffirmation(affirmationId, userId);
     }
     private Affirmation convertToEntity(AffirmationResource resource) {
